@@ -1,0 +1,19 @@
+1/  文件的训练数据及主要包含两个类型：原始文档139_8.txt，138_23.ann 分别是原始文档以及对应的标注，标注数据是  T25  Drug 639 644  预混胰岛素
+    分别表示id以及对应的实体类别和对应的开始结束位置
+
+2/  首先处理数据成能够训练的数据prepro.py
+    (1)首先获取对应的实体类别以及对应的开始结束位置 : taglist
+    (2)然后按照首个开始位置进行排序得到排序后的三元组 : taglist_new
+    (3)把文档按照字符分开，然后利用标注B，i，E对应的类别分开放到doc其他设置为O,按照。分开作为一个训练数据
+3/  接下来就是main.py是整个模型的运行接口
+    (1)加载处理好的数据集 train_sent
+    (2)如果用的是BIEO模式标注，则进行更改: update_tag_scheme
+    (3)开始需要创建字符对应id的map形式 :char_mapping   _c, char_to_id, id_to_char
+    (4)分别按照比例抽取部分数据作为训练数据集和验证数据集
+    (5)把数据集实际字符转化为下标的形式prepare_dataset()  返回数据为string, chars, segs, tags
+       分别为实际字符列表、对应的id、把分词结果作为特征、对应标记作为下标id
+    (6) 初始化模型  model = create_model(sess, Model, FLAGS.ckpt_path, load_word2vec, config, id_to_char, logger)
+
+
+
+
